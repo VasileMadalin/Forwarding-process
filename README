@@ -1,0 +1,22 @@
+//Vasile Madalin Constantin 322CB
+Pentru rezolvarea problemei, am creat o functie de parsare a tabelei de 
+routare. Pentru parsare, am citit linie cu linie fisierul de intrare, 
+apoi am creat functia "parse_line" care stocheaza in vectorii sirurile 
+despartite de spatiu. Folosind inet_aton am convertit sirurile in adrese, 
+si le-am adaugat in vectorul de structuri(structura este definita in skel.h)
+Pentru fiecare pechet primit, am extras header-ul(arp_header, 
+ether_header, ip_hdr)
+Am verificat daca arp-ul este de request sau de reply, in cazul de request, 
+am folosit functia send_arp pentru a da reply, in cazul de reply, am adaugat 
+in lista de asteptare(am folosit lista implementata in schelet) un nou request.
+Apoi, am verificat daca pachetul este destinat router-ului sau nu.
+In cazul in care este destinat, am trimis un icmp, in cazul in care pachetul 
+are alta destinatie, am verificat TTL-ul(daca este mai mare decat 2 este ok,
+in caz contrar am trimis icmp_error), am verificat checksum(este ok sa fie 
+egal cu 0, in caz contrar, se trimite icmp error), apoi am gasit o ruta spre
+destinatie folosind o functie implementata anterior(se verifica daca ip-ul 
+rutei exista in lista de arp), daca nu se gaseste ruta trimit un icmp de 
+eroare host_unreachable.
+
+Problemele intalnite au fost implementarea cautarii eficiente in tabela de 
+routare dar si crearea unei cozi pentru dirijarea pachetului.
